@@ -1,5 +1,5 @@
 export const API_BASE =
-  import.meta.env.VITE_API_URL || "https://resumeai-qzg7.onrender.com";
+  `${import.meta.env.VITE_API_URL || "https://resumeai-qzg7.onrender.com"}/api/v1`;
 
 export const ROUTES = {
   home: "/",
