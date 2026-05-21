@@ -1,7 +1,7 @@
-import { type HTMLAttributes } from "react";
+import { type ComponentPropsWithRef } from "react";
 import { cn } from "../../utils/cn";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+interface CardProps extends ComponentPropsWithRef<"div"> {
   /** Visual elevation level — controls shadow and border brightness */
   elevation?: "flat" | "raised" | "elevated";
   /** Add a subtle hover lift + glow effect */
@@ -19,10 +19,12 @@ export default function Card({
   children,
   elevation = "raised",
   hoverable = false,
+  ref,
   ...props
 }: CardProps) {
   return (
     <div
+      ref={ref}
       className={cn(
         "rounded-xl border p-6 transition-all duration-200",
         elevations[elevation],
