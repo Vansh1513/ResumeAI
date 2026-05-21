@@ -56,9 +56,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Explicitly allow the requested Vercel production origin and local development origins
+# Explicitly allow the requested Vercel production/preview origins and local development origins
 allowed_origins = list(set(settings.cors_origins + [
     "https://resume-ai-amber-one.vercel.app",
+    "https://resume-hzf6ryw9k-vansh1513s-projects.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173"
 ]))
@@ -66,6 +67,7 @@ allowed_origins = list(set(settings.cors_origins + [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=r"https://resume-.*-vansh1513s-projects\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

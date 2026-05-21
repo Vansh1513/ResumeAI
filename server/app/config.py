@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import field_validator
+from pydantic import field_validator, Field, AliasChoices
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # server/ directory (parent of app/)
@@ -30,11 +30,30 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     openai_model: str = "gpt-4o-mini"
 
-    cors_origins: list[str] = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://resume-ai-amber-one.vercel.app",
-    ]
+    cors_origins: list[str] = Field(
+        default=[
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "https://resume-ai-amber-one.vercel.app",
+            "https://resume-hzf6ryw9k-vansh1513s-projects.vercel.app",
+        ],
+        validation_alias=AliasChoices("cors_origins", "cors_origin")
+    )
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value: str | list[str]) -> list[str]:
+        """Allow CORS origins to be set as a comma-separated list or JSON array in env vars."""
+        if isinstance(value, str):
+            val_stripped = value.strip()
+            if val_stripped.startswith("[") and val_stripped.endswith("]"):
+                import json
+                try:
+                    return json.loads(val_stripped)
+                except Exception:
+                    pass
+            return [x.strip() for x in val_stripped.split(",") if x.strip()]
+        return value
 
     @field_validator("upload_dir", mode="before")
     @classmethod
