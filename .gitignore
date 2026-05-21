@@ -1,0 +1,23 @@
+# Frontend
+client/node_modules/
+client/dist/
+
+# Backend
+server/venv/
+server/uploads/
+server/__pycache__/
+server/app/__pycache__/
+
+# Python
+*.pyc
+
+# Environment Variables
+.env
+server/.env
+client/.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
